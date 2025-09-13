@@ -1,0 +1,21 @@
+# Virtual environment
+venv/
+*.egg-info/
+__pycache__/
+*.pyc
+
+# Jupyter notebooks checkpoints
+.ipynb_checkpoints/
+
+# Data files
+data/raw/
+data/processed/
+results/
+logs/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/

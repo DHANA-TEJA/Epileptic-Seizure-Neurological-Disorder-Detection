@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Result — EEG Detection</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="bg-light">
+  <div class="container py-4">
+    <div class="card shadow-sm mx-auto" style="max-width:1000px;">
+      <div class="card-body">
+        <h3>Result for: {{ filename }}</h3>
+        <p class="lead">
+          Channel: <strong>{{ chosen_channel }}</strong>
+        </p>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="p-3 mb-3 bg-white rounded">
+              <h5>Overall</h5>
+              <p class="{{ 'text-danger' if 'Seizure' in result_text else 'text-success' }} fw-bold">{{ result_text }}</p>
+              <p>Confidence (fraction of segments flagged): <strong>{{ confidence }}</strong></p>
+              <p>Thresholds: per-seg ≥ {{ thresholds.per_seg }}, fraction ≥ {{ thresholds.seg_frac }}</p>
+              <a href="{{ url_for('download_file', filename=table_url.split('/')[-1]) }}" class="btn btn-outline-primary">Download segment predictions CSV</a>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <img src="/{{ plot_url }}" class="img-fluid rounded shadow-sm" alt="EEG plot">
+          </div>
+        </div>
+
+        <hr>
+        <h5>Segment predictions (first 100)</h5>
+        <div style="max-height:300px; overflow:auto;">
+          <table class="table table-sm">
+            <thead>
+              <tr><th>Segment</th><th>Seizure Prob</th><th>Flag</th></tr>
+            </thead>
+            <tbody>
+              {% for r in table_rows[:100] %}
+                <tr>
+                  <td>{{ r.segment_index }}</td>
+                  <td>{{ '%.3f'|format(r.seizure_prob) }}</td>
+                  <td>{% if r.is_seizure %}<span class="badge bg-danger">Yes</span>{% else %}<span class="badge bg-success">No</span>{% endif %}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        <div class="mt-3">
+          <a href="/" class="btn btn-secondary">Back</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Batch Test Results</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+    th { background-color: #f2f2f2; }
+    tr:nth-child(even) { background-color: #f9f9f9; }
+  </style>
+</head>
+<body>
+  <h2>Batch Test Results (EEG Files in Folder)</h2>
+  <table>
+    <tr>
+      <th>Filename</th>
+      <th>Result</th>
+      <th>Seizure Segments</th>
+      <th>Total Segments</th>
+    </tr>
+    {% for row in results %}
+    <tr>
+      <td>{{ row.filename }}</td>
+      <td>{{ row.result }}</td>
+      <td>{{ row.seizure_count }}</td>
+      <td>{{ row.total_segments }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+</body>
+</html>
